@@ -1,5 +1,6 @@
 package com.example.c1moviles.drogstore.home.presentations
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +40,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -47,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.c1moviles.R
 import com.example.c1moviles.drogstore.home.HomeViewModel
 import kotlin.reflect.typeOf
 
@@ -190,7 +194,16 @@ fun ViewProductos(){
             .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center
     ) {
-        repeat(3) {
+        Image(
+            painter = painterResource(id = R.drawable.siahorro), // Asegúrate de que la imagen esté en res/drawable
+            contentDescription = "Logo Si Ahorro", // Descripción accesible
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp) // Ajusta la altura según el tamaño de la imagen
+                .padding(bottom = 16.dp), // Espaciado inferior
+            contentScale = ContentScale.Fit // Escala la imagen para que quepa dentro del espacio
+        )
+        repeat(30) {
             Producto(nombre = "Alprazolam 0.25mg 30 tabletas", precio = 19.99f, cantidad = 3, receta = "Si, por supuesto")
             Spacer(modifier = Modifier.height(30.dp))
         }
