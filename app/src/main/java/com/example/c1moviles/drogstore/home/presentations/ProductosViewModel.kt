@@ -1,11 +1,22 @@
 package com.example.c1moviles.drogstore.home.presentations
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.c1moviles.drogstore.home.data.datasource.postProducto
+import com.example.c1moviles.drogstore.register.data.datasource.postUser
+import com.example.c1moviles.drogstore.home.data.model.Producto
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
+class ProductosViewModel @Inject constructor() : ViewModel() {
+    private val _registrationStatus = MutableLiveData<Boolean>()
+    val registrationStatus: LiveData<Boolean> = _registrationStatus
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
 
-class ProductosViewModel () : ViewModel() {
     private var _nombre = MutableLiveData<String>()
     val nombre : LiveData<String> = _nombre
 
@@ -29,6 +40,29 @@ class ProductosViewModel () : ViewModel() {
     }
     fun onChangeReceta(receta : String) {
         _receta.value = receta
+    }
+
+    fun registerProducto() {
+        viewModelScope.launch {
+            Log.d("ProductosViewModel", "Llamando a postProducto()")
+            val producto = Producto(
+                nombre = _nombre.value ?: "",
+                precio = _precio.value ?: 0f,
+                cantidad = _cantidad.value ?: 0,
+                receta = _receta.value ?: ""
+            )
+            val result = postProducto(producto)
+
+            if (result) {
+                _registrationStatus.value = true
+                _errorMessage.value = null  // Limpia cualquier error anterior
+            } else {
+                _registrationStatus.value = false
+                _errorMessage.value = "Error al registrar. Verifica los datos e inténtalo nuevamente."
+            }
+
+            Log.d("ProductosViewModel", "Resultado de postProducto(): $result")
+        }
     }
 
 }

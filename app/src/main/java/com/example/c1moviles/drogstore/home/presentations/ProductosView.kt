@@ -33,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -49,17 +50,27 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.c1moviles.R
 import com.example.c1moviles.drogstore.home.HomeViewModel
 import kotlin.reflect.typeOf
 
 @Composable
-fun FormResource(productosViewModel: ProductosViewModel, navController: NavController){
+fun FormResource(productosViewModel: ProductosViewModel= hiltViewModel(), navController: NavController){
     val nombre:String by productosViewModel.nombre.observeAsState("")
     val precio:Float by productosViewModel.precio.observeAsState(0f)
     val cantidad:Int by productosViewModel.cantidad.observeAsState(0)
     val receta:String by productosViewModel.receta.observeAsState("")
+
+    val registrationStatus by productosViewModel.registrationStatus.observeAsState()
+    val errorMessage by productosViewModel.errorMessage.observeAsState("")
+
+    LaunchedEffect(registrationStatus) {
+        if (registrationStatus == true) {
+            navController.navigate("home")
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -166,7 +177,7 @@ fun FormResource(productosViewModel: ProductosViewModel, navController: NavContr
 
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = {},
+            onClick = {productosViewModel.registerProducto() },
             modifier = Modifier.fillMaxWidth()
                 .padding(horizontal = 10.dp)
                 .height(50.dp),
@@ -178,6 +189,15 @@ fun FormResource(productosViewModel: ProductosViewModel, navController: NavContr
             Text(text = "Agregar +",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold)
+        }
+        Spacer(modifier = Modifier.height(30.dp))
+        if (registrationStatus == false) {
+            Text(
+                text = errorMessage.toString(),
+                color = Color.Red,
+                fontSize = 16.sp,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+            )
         }
     }
 }
@@ -195,13 +215,13 @@ fun ViewProductos(){
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.siahorro), // Asegúrate de que la imagen esté en res/drawable
-            contentDescription = "Logo Si Ahorro", // Descripción accesible
+            painter = painterResource(id = R.drawable.siahorro),
+            contentDescription = "Logo Si Ahorro",
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp) // Ajusta la altura según el tamaño de la imagen
-                .padding(bottom = 16.dp), // Espaciado inferior
-            contentScale = ContentScale.Fit // Escala la imagen para que quepa dentro del espacio
+                .height(100.dp)
+                .padding(bottom = 16.dp),
+            contentScale = ContentScale.Fit
         )
         repeat(30) {
             Producto(nombre = "Alprazolam 0.25mg 30 tabletas", precio = 19.99f, cantidad = 3, receta = "Si, por supuesto")

@@ -43,15 +43,15 @@ fun Home(navController: NavController) {
             .padding(30.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        // Reemplazar el Text con una Image
+
         Image(
-            painter = painterResource(id = R.drawable.siahorro), // Asegúrate de que la imagen esté en res/drawable
-            contentDescription = "Logo Si Ahorro", // Descripción accesible
+            painter = painterResource(id = R.drawable.siahorro),
+            contentDescription = "Logo Si Ahorro",
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp) // Ajusta la altura según el tamaño de la imagen
-                .padding(bottom = 16.dp), // Espaciado inferior
-            contentScale = ContentScale.Fit // Escala la imagen para que quepa dentro del espacio
+                .height(100.dp)
+                .padding(bottom = 16.dp),
+            contentScale = ContentScale.Fit
         )
 
         Button(

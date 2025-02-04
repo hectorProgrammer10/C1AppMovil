@@ -1,6 +1,6 @@
-package com.example.c1moviles.drogstore.register.data.datasource
+package com.example.c1moviles.drogstore.home.data.datasource
 
-import com.example.c1moviles.drogstore.register.data.model.User
+import com.example.c1moviles.drogstore.home.data.model.Producto
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -9,16 +9,16 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
 
-suspend fun postUser(user: User): Boolean {
+suspend fun postProducto(producto: Producto): Boolean {
     val client = HttpClient(Android) {
         install(ContentNegotiation) {
             gson() // Usa Gson para la serialización
         }
     }
     return try {
-        val response: HttpResponse = client.post("http://10.0.2.2:8080/api/solver/signup") {
+        val response: HttpResponse = client.post("http://10.0.2.2:8080/api/app/ssv/mds") {
             contentType(ContentType.Application.Json)
-            setBody(user)
+            setBody(producto)
         }
 
         response.status == HttpStatusCode.OK
