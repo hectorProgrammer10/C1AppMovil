@@ -1,5 +1,7 @@
 package com.example.c1moviles.drogstore.register.presentation
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -48,14 +52,22 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-
+import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
-fun RegisterScreen(registerViewModel: RegisterViewModel, navController: NavHostController) {
-    val username:String by registerViewModel.username.observeAsState("")
-    val password:String by registerViewModel.password.observeAsState("")
-    val email:String by registerViewModel.email.observeAsState("")
-    val nombre:String by registerViewModel.nombre.observeAsState("")
+fun RegisterScreen(registerViewModel: RegisterViewModel = hiltViewModel(), navController: NavHostController) {
+    val username: String by registerViewModel.username.observeAsState("")
+    val password: String by registerViewModel.password.observeAsState("")
+    val email: String by registerViewModel.email.observeAsState("")
+    val nombre: String by registerViewModel.nombre.observeAsState("")
     var isPasswordVisible by remember { mutableStateOf(false) }
+    val registrationStatus by registerViewModel.registrationStatus.observeAsState()
+    val errorMessage by registerViewModel.errorMessage.observeAsState("")
+
+    LaunchedEffect(registrationStatus) {
+        if (registrationStatus == true) {
+            navController.navigate("home")
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -119,7 +131,7 @@ fun RegisterScreen(registerViewModel: RegisterViewModel, navController: NavHostC
         Spacer(modifier = Modifier.height(20.dp))
         TextField(
             value = email,
-            onValueChange = {registerViewModel.onChangeEmail(it)},
+            onValueChange = { registerViewModel.onChangeEmail(it) },
             label = { Text("Email") },
             shape = RoundedCornerShape(10.dp),
             placeholder = { Text("123@ids.com") },
@@ -135,7 +147,7 @@ fun RegisterScreen(registerViewModel: RegisterViewModel, navController: NavHostC
         Spacer(modifier = Modifier.height(30.dp))
         TextField(
             value = nombre,
-            onValueChange = {registerViewModel.onChangeNombre(it)},
+            onValueChange = { registerViewModel.onChangeNombre(it) },
             label = { Text("Nombre completo") },
             shape = RoundedCornerShape(10.dp),
             placeholder = { Text("Héctor Uriel Aguilar Pérez") },
@@ -150,28 +162,39 @@ fun RegisterScreen(registerViewModel: RegisterViewModel, navController: NavHostC
         )
         Spacer(modifier = Modifier.height(30.dp))
         Button(
-            onClick = {},
-            modifier = Modifier.fillMaxWidth()
+            onClick = { registerViewModel.registerUser() },
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = 10.dp)
                 .height(50.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Black,
-                contentColor = Color.White),
+                contentColor = Color.White
+            ),
             shape = RoundedCornerShape(0.dp)
         ) {
-            Text(text = "Crear cuenta",
+            Text(
+                text = "Crear cuenta",
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold)
+                fontWeight = FontWeight.Bold
+            )
         }
         Spacer(modifier = Modifier.height(30.dp))
+        if (registrationStatus == false) {
+            Text(
+                text = errorMessage.toString(),
+                color = Color.Red,
+                fontSize = 16.sp,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+            )
+        }
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(Color.Black, textDecoration = TextDecoration.Underline)){
+                    withStyle(style = SpanStyle(Color.Black, textDecoration = TextDecoration.Underline)) {
                         append("¿Ya tienes cuenta?")
                     }
                 },
@@ -182,5 +205,4 @@ fun RegisterScreen(registerViewModel: RegisterViewModel, navController: NavHostC
             )
         }
     }
-
 }

@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.dagger.hilt.android) // Usa alias para Hilt
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -40,6 +42,25 @@ android {
 }
 
 dependencies {
+    // Cliente Ktor básico
+    implementation("io.ktor:ktor-client-core:2.3.4")
+
+    // Cliente Ktor para Android (motor Android)
+    implementation("io.ktor:ktor-client-android:2.3.4")
+
+    // Para la negociación de contenido (ContentNegotiation)
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.4")
+
+    // Para la serialización con Gson (si lo usas, de lo contrario puedes usar kotlinx.serialization)
+    implementation("io.ktor:ktor-serialization-gson:2.3.4")
+
+    // Opcional: Para ver logs de las peticiones (muy útil en desarrollo)
+    implementation("io.ktor:ktor-client-logging:2.3.4")
+    implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.dagger.hilt.android)
+    kapt(libs.dagger.hilt.compiler)
+
     implementation(libs.com.squareup.retrofit2.retrofit)
     implementation(libs.com.squareup.retrofit2.converter.json)
     implementation(libs.androidx.compose.material.icons.extended)

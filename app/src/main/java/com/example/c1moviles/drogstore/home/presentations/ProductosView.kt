@@ -240,8 +240,8 @@ fun Producto(nombre: String, precio: Float, cantidad: Int, receta: String) {
             contentDescription = "Producto",
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .height(50.dp)
-                .width(50.dp)
+                .height(60.dp)
+                .width(60.dp)
         )
     }
 }

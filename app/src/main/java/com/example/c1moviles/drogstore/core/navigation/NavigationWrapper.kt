@@ -14,7 +14,7 @@ import com.example.c1moviles.drogstore.login.presentation.LoginScreen
 import com.example.c1moviles.drogstore.login.presentation.LoginViewModel
 import com.example.c1moviles.drogstore.register.presentation.RegisterScreen
 import com.example.c1moviles.drogstore.register.presentation.RegisterViewModel
-
+import androidx.hilt.navigation.compose.hiltViewModel
 @SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun AppNavigator() {
@@ -25,7 +25,10 @@ fun AppNavigator() {
             LoginScreen(loginViewModel = LoginViewModel(), navController = navController)
         }
         composable("register") {
-            RegisterScreen(navController = navController, registerViewModel = RegisterViewModel())
+            RegisterScreen(
+                navController = navController,
+                registerViewModel = RegisterViewModel()
+            )
         }
         composable("home") {
             Home(navController = navController)
