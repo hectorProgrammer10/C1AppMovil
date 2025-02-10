@@ -17,6 +17,7 @@ import com.example.c1moviles.drogstore.register.presentation.RegisterScreen
 import com.example.c1moviles.drogstore.register.presentation.RegisterViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.c1moviles.drogstore.home.presentations.FarmaciasViewModel
+
 import com.example.c1moviles.drogstore.registerStrore.data.model.Farmacia
 import com.example.c1moviles.drogstore.registerStrore.presentation.RegisterStore
 import com.example.c1moviles.drogstore.registerStrore.presentation.RegisterStoreViewModel
@@ -51,6 +52,7 @@ fun AppNavigator() {
         composable("viewFarmacia") {
             ViewFarmacias(farmaciasViewModel = FarmaciasViewModel())
         }
+
 
 
     }

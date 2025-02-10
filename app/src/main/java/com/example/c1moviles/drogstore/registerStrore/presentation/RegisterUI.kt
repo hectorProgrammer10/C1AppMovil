@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -52,11 +53,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.c1moviles.drogstore.register.presentation.RegisterViewModel
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun RegisterStore(registerStoreViewModel: RegisterStoreViewModel = hiltViewModel(), navController: NavHostController) {
+    val context = LocalContext.current
     val name: String by registerStoreViewModel.name.observeAsState("")
-
+    val place: String by registerStoreViewModel.place.observeAsState("")
     val registrationStatus by registerStoreViewModel.registrationStatus.observeAsState()
     val errorMessage by registerStoreViewModel.errorMessage.observeAsState("")
 
@@ -71,7 +75,8 @@ fun RegisterStore(registerStoreViewModel: RegisterStoreViewModel = hiltViewModel
             .fillMaxSize()
             .background(Color.White)
             .padding(30.dp),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -80,7 +85,9 @@ fun RegisterStore(registerStoreViewModel: RegisterStoreViewModel = hiltViewModel
             fontSize = 30.sp,
             color = Color.Black
         )
+
         Spacer(modifier = Modifier.height(30.dp))
+
         TextField(
             value = name,
             onValueChange = { registerStoreViewModel.onChangeName(it) },
@@ -92,20 +99,35 @@ fun RegisterStore(registerStoreViewModel: RegisterStoreViewModel = hiltViewModel
                 unfocusedContainerColor = Color.White,
                 focusedContainerColor = Color.White
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = 10.dp)
                 .border(0.6.dp, color = Color.Black)
         )
 
         Spacer(modifier = Modifier.height(30.dp))
+
         Button(
-            onClick = {}
+            onClick = { registerStoreViewModel.getLocation(context) }
         ) {
             Icon(Icons.Default.Place, contentDescription = "ubicacion")
-            Text(text="Obtener ubicación")
-
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "Obtener ubicación")
         }
+
+        // Muestra la ubicación obtenida (opcional)
+        if (place.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = "Ubicación: $place",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                color = Color.Black
+            )
+        }
+
         Spacer(modifier = Modifier.height(30.dp))
+
         Button(
             onClick = { registerStoreViewModel.registerStore() },
             modifier = Modifier
@@ -124,15 +146,18 @@ fun RegisterStore(registerStoreViewModel: RegisterStoreViewModel = hiltViewModel
                 fontWeight = FontWeight.Bold
             )
         }
+
         Spacer(modifier = Modifier.height(30.dp))
+
         if (registrationStatus == false) {
             Text(
-                text = errorMessage.toString(),
+                text = errorMessage ?: "",
                 color = Color.Red,
                 fontSize = 16.sp,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 10.dp)
             )
         }
-
     }
 }

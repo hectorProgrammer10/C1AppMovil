@@ -42,6 +42,10 @@ android {
 }
 
 dependencies {
+    implementation("com.google.accompanist:accompanist-permissions:0.30.1")
+    implementation("com.google.maps.android:maps-compose:2.11.2")
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.maps)
     // Cliente Ktor básico
     implementation("io.ktor:ktor-client-core:2.3.4")
 
