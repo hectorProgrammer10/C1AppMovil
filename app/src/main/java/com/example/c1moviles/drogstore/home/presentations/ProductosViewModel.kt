@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.c1moviles.drogstore.home.data.datasource.getProductos
 import com.example.c1moviles.drogstore.home.data.datasource.postProducto
 import com.example.c1moviles.drogstore.register.data.datasource.postUser
 import com.example.c1moviles.drogstore.home.data.model.Producto
@@ -16,6 +17,10 @@ class ProductosViewModel @Inject constructor() : ViewModel() {
     val registrationStatus: LiveData<Boolean> = _registrationStatus
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
+
+
+    private val _productos = MutableLiveData<List<Producto>?>()
+    val productos: LiveData<List<Producto>?> = _productos
 
     private var _nombre = MutableLiveData<String>()
     val nombre : LiveData<String> = _nombre
@@ -55,13 +60,19 @@ class ProductosViewModel @Inject constructor() : ViewModel() {
 
             if (result) {
                 _registrationStatus.value = true
-                _errorMessage.value = null  // Limpia cualquier error anterior
+                _errorMessage.value = null
             } else {
                 _registrationStatus.value = false
                 _errorMessage.value = "Error al registrar. Verifica los datos e inténtalo nuevamente."
             }
 
             Log.d("ProductosViewModel", "Resultado de postProducto(): $result")
+        }
+    }
+
+    fun fetchProductos() {
+        viewModelScope.launch {
+            _productos.value = getProductos()
         }
     }
 

@@ -10,11 +10,17 @@ import com.example.c1moviles.drogstore.home.HomeViewModel
 import com.example.c1moviles.drogstore.home.presentations.FormResource
 import com.example.c1moviles.drogstore.home.presentations.ProductosViewModel
 import com.example.c1moviles.drogstore.home.presentations.ViewProductos
+import com.example.c1moviles.drogstore.home.presentations.ViewFarmacias
 import com.example.c1moviles.drogstore.login.presentation.LoginScreen
 import com.example.c1moviles.drogstore.login.presentation.LoginViewModel
 import com.example.c1moviles.drogstore.register.presentation.RegisterScreen
 import com.example.c1moviles.drogstore.register.presentation.RegisterViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.c1moviles.drogstore.home.presentations.FarmaciasViewModel
+import com.example.c1moviles.drogstore.registerStrore.data.model.Farmacia
+import com.example.c1moviles.drogstore.registerStrore.presentation.RegisterStore
+import com.example.c1moviles.drogstore.registerStrore.presentation.RegisterStoreViewModel
+
 @SuppressLint("ViewModelConstructorInComposable")
 @Composable
 fun AppNavigator() {
@@ -37,7 +43,13 @@ fun AppNavigator() {
             FormResource(productosViewModel = ProductosViewModel(), navController = navController)
         }
         composable("viewProducto") {
-            ViewProductos()
+            ViewProductos(productosViewModel = ProductosViewModel())
+        }
+        composable("registerStore") {
+            RegisterStore(registerStoreViewModel = RegisterStoreViewModel(), navController = navController)
+        }
+        composable("viewFarmacia") {
+            ViewFarmacias(farmaciasViewModel = FarmaciasViewModel())
         }
 
 

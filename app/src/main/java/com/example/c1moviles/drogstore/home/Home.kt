@@ -66,7 +66,7 @@ fun Home(navController: NavController) {
                 navController.navigate("addProducto")
             }
         ) {
-            Text("Añadir producto", color = Color.White, fontWeight = FontWeight.Bold)
+            Text("Añadir publicación", color = Color.White, fontWeight = FontWeight.Bold)
         }
 
         Button(
@@ -79,7 +79,33 @@ fun Home(navController: NavController) {
                 },
             onClick = { navController.navigate("viewProducto") }
         ) {
-            Text("Ver productos", color = Color.White, fontWeight = FontWeight.Bold)
+            Text("Ver publicaciones", color = Color.White, fontWeight = FontWeight.Bold)
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .graphicsLayer {
+                    shadowElevation = 9.dp.toPx()
+                    shape = CircleShape
+                    clip = true
+                },
+            onClick = { navController.navigate("registerStore") }
+        ) {
+            Text("Registrarse como farmacia", color = Color.White, fontWeight = FontWeight.Bold)
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .graphicsLayer {
+                    shadowElevation = 9.dp.toPx()
+                    shape = CircleShape
+                    clip = true
+                },
+            onClick = { navController.navigate("viewFarmacia") }
+        ) {
+            Text("Ver farmacias", color = Color.White, fontWeight = FontWeight.Bold)
         }
     }
 }

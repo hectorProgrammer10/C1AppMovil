@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,7 +30,11 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Preview
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -54,6 +60,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.c1moviles.R
 import com.example.c1moviles.drogstore.home.HomeViewModel
+import com.example.c1moviles.drogstore.home.data.model.Producto
 import kotlin.reflect.typeOf
 
 @Composable
@@ -203,17 +210,15 @@ fun FormResource(productosViewModel: ProductosViewModel= hiltViewModel(), navCon
 }
 
 @Composable
-fun ViewProductos(){
-    val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(30.dp)
-            .padding(vertical = 30.dp)
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.Center
-    ) {
+fun ViewProductos(productosViewModel: ProductosViewModel = hiltViewModel()) {
+
+    val productos by productosViewModel.productos.observeAsState(initial = null)
+
+    LaunchedEffect(Unit) {
+        productosViewModel.fetchProductos()
+    }
+
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp).padding(vertical = 30.dp)) {
         Image(
             painter = painterResource(id = R.drawable.siahorro),
             contentDescription = "Logo Si Ahorro",
@@ -223,45 +228,31 @@ fun ViewProductos(){
                 .padding(bottom = 16.dp),
             contentScale = ContentScale.Fit
         )
-        repeat(30) {
-            Producto(nombre = "Alprazolam 0.25mg 30 tabletas", precio = 19.99f, cantidad = 3, receta = "Si, por supuesto")
-            Spacer(modifier = Modifier.height(30.dp))
+        if (productos == null) {
+            CircularProgressIndicator()
+        } else {
+            LazyColumn {
+                items(productos!!) { producto ->
+                    ProductoItem(producto)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+            }
         }
     }
 }
-@Composable
-fun Producto(nombre: String, precio: Float, cantidad: Int, receta: String) {
-    Row(
-        modifier = Modifier
-            .height(100.dp)
-            .fillMaxWidth()
-            .border(2.dp, Color.Gray)
-            .padding(3.dp)
-            .graphicsLayer {
-                shadowElevation = 19.dp.toPx()
-                shape = RectangleShape
-                clip = true
-            }
-            .background(Color.White)
-    ) {
 
-        Column(
-            modifier = Modifier
-                .weight(1f)
-        ) {
-            Text(text = "$nombre", color = Color.Blue, fontWeight = FontWeight.Bold)
-            Text(text = "$"+precio, color = Color.Gray)
-            Text(text = "Cantidad: $cantidad", color = Color.Gray)
-            Text(text = "Receta: $receta", color = Color.Gray)
+@Composable
+fun ProductoItem(producto: Producto) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = producto.nombre, style = MaterialTheme.typography.titleLarge)
+            Text(text = "Precio: $${producto.precio}")
+            Text(text = "Cantidad: ${producto.cantidad}")
+            Text(text = "Receta: ${producto.receta}")
         }
 
-        Icon(
-            imageVector = Icons.Default.Preview,
-            contentDescription = "Producto",
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .height(60.dp)
-                .width(60.dp)
-        )
     }
 }
