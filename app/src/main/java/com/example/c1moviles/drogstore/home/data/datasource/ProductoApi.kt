@@ -13,7 +13,7 @@ import io.ktor.serialization.gson.*
 suspend fun postProducto(producto: Producto): Boolean {
     val client = HttpClient(Android) {
         install(ContentNegotiation) {
-            gson() // Usa Gson para la serialización
+            gson()
         }
     }
     return try {
@@ -34,7 +34,7 @@ suspend fun postProducto(producto: Producto): Boolean {
 suspend fun getProductos(): List<Producto>? {
     val client = HttpClient(Android) {
         install(ContentNegotiation) {
-            gson() // Usa Gson para la serialización
+            gson()
         }
     }
 

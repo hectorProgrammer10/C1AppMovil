@@ -19,6 +19,7 @@ hilt = "2.48"
 hiltNavigationCompose = "1.2.0"
 play-services-location = "18.0.0"
 play-services-maps = "17.0.1"
+accessibilityTestFramework = "4.1.1"
 
 [libraries]
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "play-services-location" }
@@ -48,6 +49,7 @@ androidx-navigation-runtime-android = { group = "androidx.navigation", name = "n
 androidx-animation-core-lint = { group = "androidx.compose.animation", name = "animation-core-lint", version.ref = "animationCoreLint" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "material2" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+accessibility-test-framework = { group = "com.google.android.apps.common.testing.accessibility.framework", name = "accessibility-test-framework", version.ref = "accessibilityTestFramework" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

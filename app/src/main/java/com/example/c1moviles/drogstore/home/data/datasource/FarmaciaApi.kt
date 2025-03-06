@@ -14,7 +14,7 @@ import io.ktor.serialization.gson.gson
 suspend fun getFarmacias(): List<Farmacia>? {
     val client = HttpClient(Android) {
         install(ContentNegotiation) {
-            gson() // Usa Gson para la serialización
+            gson()
         }
     }
 

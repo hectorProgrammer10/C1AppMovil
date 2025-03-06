@@ -67,13 +67,13 @@ class RegisterStoreViewModel @Inject constructor() : ViewModel() {
 
         // Configura la solicitud de ubicación
         val locationRequest = LocationRequest.create().apply {
-            interval = 5000               // Intervalo deseado en milisegundos (no siempre se respeta exactamente)
-            fastestInterval = 2000        // Intervalo más rápido en milisegundos
+            interval = 5000
+            fastestInterval = 2000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            numUpdates = 1                // Solicitamos una única actualización
+            numUpdates = 1
         }
 
-        // Define el callback para recibir la ubicación
+
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 val location = locationResult.lastLocation
